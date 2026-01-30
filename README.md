@@ -1,2 +1,9 @@
 # goit-node-rest-api
-Contacts Service
+REST API for Contacts Service
+
+Routes:
+GET /api/contacts
+GET /api/contacts/:id
+DELETE /api/contacts/:id
+POST /api/contacts
+PUT /api/contacts/:id

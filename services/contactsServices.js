@@ -1,78 +1,62 @@
+import idGenerator from '../helpers/idGenerator.js';
 import fs from "fs/promises";
 import path from "path";
-import {idGenerator} from "../helpers/idGenerator.js";
+import { fileURLToPath } from 'url';
 
 
-const __dirname = import.meta.dirname;
-const contactsPath = path.join(__dirname, 'db', 'contacts.json');
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const dbPath = path.join(__dirname, "../db/contacts.json");
 
-async function readContactFile(filePath) {
-    try {
-        const data = await fs.readFile(filePath, 'utf8' );
-        if (!data.trim()) {
-            return [];
-        }
-        return JSON.parse(data);
-    } catch (error) {
-        if (error.code === 'ENOENT') {
-            console.error('Contacts file not found.');
-        } else if (error instanceof SyntaxError) {
-            console.error('The data in the file is not valid JSON data.');
-        } else {
-            console.error('Failed to read contacts file:', error.message);
-        }
-        process.exit(1);
-    }
-}
-
-export async function listContacts() {
-    return await readContactFile(contactsPath);
-}
-
-
-export async function getContactById(contactId) {
-    if (!contactId) {
-        return null;
-    }
-    const contacts = await listContacts();    
-    return contacts.find(contact => contact.id === contactId) || null;
-}
-
-
-export async function removeContact(contactId) {
-    if (!contactId) {
-        return null;
-    }
-    const contacts = await readContactFile(contactsPath);
-    const index = contacts.findIndex(contact => contact.id === contactId);
-
-    if (index === -1) {
-        return null;
-    }
-    const [removedContact] =  contacts.splice(index, 1);
-    await fs.writeFile(
-        contactsPath,
+const updateContactList = contacts => fs.writeFile(
+        dbPath,
         JSON.stringify(contacts, null, 2),
         'utf8'
     );
-    return removedContact;
-}
 
-export async function addContact(name, email, phone) {
-  if (!name || !email || !phone) {
-    throw new Error("Missing required contact fields");
-  }  
-  const contacts = await readContactFile(contactsPath);
-  
-  const generated_id = id_generator(20);
-  contacts.push({
-    id: generated_id, 
-    name: name, 
-    email: email, 
-    phone: phone});
-  await fs.writeFile(
-    contactsPath, 
-    JSON.stringify(contacts, null, 2), 
-    'utf8');
-  return getContactById(generated_id);
-}
+export const listContacts = async() =>{
+    const data = await fs.readFile(dbPath, 'utf8');
+    return JSON.parse(data);
+};
+
+export const getContactById = async(contactId) => {
+    const contacts = await listContacts();    
+    return contacts.find(contact => contact.id === contactId) || null;
+};
+
+export const addContact = async(data) => {
+    const contacts = await listContacts();
+    const newContact = {
+        id: idGenerator(20),
+        ...data,
+    }
+    contacts.push(newContact);
+    await updateContactList(contacts);
+    return newContact;
+};
+
+export const updateContact = async(contactId, data) => {
+    const contacts = await listContacts();
+    const index = contacts.findIndex(contact => contact.id === contactId);
+
+    if (index === -1) return null;
+    
+    contacts[index] = {
+        ...contacts[index],
+        ...data,
+    }
+    await updateContactList(contacts);
+    return contacts[index];
+};
+
+export const removeContact = async(contactId) => {
+    const contacts = await listContacts();
+    const index = contacts.findIndex(contact => contact.id === contactId);
+
+    if (index === -1) return null;
+
+    const [removedContact] = contacts.splice(index, 1);
+    await updateContactList(contacts);
+    return removedContact;
+};
+

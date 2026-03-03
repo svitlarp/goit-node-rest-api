@@ -1,7 +1,7 @@
 import crypto from 'crypto';
 
 
-export function idGenerator(length) {
+export default function idGenerator(length) {
     return crypto
         .randomBytes(length)
         .toString('base64')

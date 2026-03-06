@@ -23,6 +23,11 @@ A simple RESTful API built with Express.js for managing contacts.
 | **PUT /api/contacts/:id** |Updates an existing contact. | 200 OK | 404 Not Found
 
 
+### Technologies
++ Node.js 
++ Express.js
++ PostgreSQL
++ Sequelize 
 
 ### Additional libraries  
 - Joi Validation Schema[--->](https://www.npmjs.com/package/joi) Schema description language and data validator for JavaScript  
@@ -43,7 +48,15 @@ cd goit-node-rest-api
 npm install
 ```
 
-3) Start the server
+3) Configure environement variables   
+Create a .env file in the root directory based on .env.example:
+```
+cp .env.example .env
+```
+Update the variables in .env according to your local configuration.   
+   
+   
+4) Start the server
 ```
 npm run dev
 ```

@@ -46,3 +46,13 @@ export const deleteContactController = async (req, res) => {
     }
     res.status(200).json(removedContact);
 };
+
+export const updateStatusContactController = async (req, res) => {
+    const { id } = req.params;
+    const { favorite } = req.body;
+    const contact = await contactsService.updateStatusContact(id, favorite);
+    if (!contact) {
+        throw HttpError(404, `Contact with id: ${id} not found`);
+    }
+    res.status(200).json(contact);
+};

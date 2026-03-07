@@ -22,7 +22,7 @@ const Contact = sequelize.define("contact", {
 });
 
 
-await Contact.sync({alter: true});
+// await Contact.sync({alter: true});
 // await Contact.truncate();
 
 export default Contact;

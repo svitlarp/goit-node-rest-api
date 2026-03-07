@@ -5,6 +5,8 @@ import cors from "cors";
 import contactsRouter from "./routes/contactsRouter.js";
 import "dotenv/config";
 import connectDatanbase from "./db/connectDatabase.js";
+import authRouter from './routes/authRouter.js';
+// import User from './db/models/User.js';
 
 
 const app = express(); 
@@ -13,6 +15,7 @@ app.use(morgan("tiny"));
 app.use(cors());
 app.use(express.json());
 app.use("/api/contacts", contactsRouter);
+app.use("/api/auth", authRouter);
 
 app.use((req, res) => {
   res.status(404).json({ message: `${req.method} ${req.url} not found` });
@@ -24,6 +27,7 @@ app.use((err, req, res, next) => {
 });
 
 await connectDatanbase();
+// await User.sync();
 
 app.listen(3000, () => {
   console.log("Server is running. Use our API on port: 3000");

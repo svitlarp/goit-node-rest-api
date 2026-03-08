@@ -13,7 +13,7 @@ export const registerUser = async data => {
         ...data,
         password: passwordHash
     });
-}
+};
 
 export const loginUser = async ({email, password}) => {
     const user = await User.findOne({
@@ -30,7 +30,19 @@ export const loginUser = async ({email, password}) => {
     const payload = {
         id: user.id,
     }
-    const token = jwt.sign(payload, JWT_SECRET, {expiresIn: "2h"});
-    // TODO return user.subscription
-    return {token, user: {email: user.email}};
-}
+    const token = jwt.sign(payload, JWT_SECRET, {expiresIn: "24h"});
+    return {
+        token: token, 
+        user: {
+            email: user.email,
+            subscription: user.subscription
+        }};
+};
+
+export const updateUserSubscription = async ({id, subscription}) => {
+    const user = await User.findByPk(id);
+    if (!user) throw HttpError(404, `User not found with id: ${id}`);
+
+    await user.update({subscription});
+    return user;
+};

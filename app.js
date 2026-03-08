@@ -6,6 +6,8 @@ import contactsRouter from "./routes/contactsRouter.js";
 import "dotenv/config";
 import connectDatanbase from "./db/connectDatabase.js";
 import authRouter from './routes/authRouter.js';
+import notFoundHandler from './middlewares/notFoundHandler.js';
+import errorHandler from './middlewares/error.handler.js';
 // import User from './db/models/User.js';
 
 
@@ -17,14 +19,8 @@ app.use(express.json());
 app.use("/api/contacts", contactsRouter);
 app.use("/api/auth", authRouter);
 
-app.use((req, res) => {
-  res.status(404).json({ message: `${req.method} ${req.url} not found` });
-});
-
-app.use((err, req, res, next) => {
-  const { status = 500, message = "Server error" } = err;
-  res.status(status).json({ message });
-});
+app.use(notFoundHandler);
+app.use(errorHandler);
 
 await connectDatanbase();
 // await User.sync();

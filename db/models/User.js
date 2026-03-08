@@ -1,14 +1,10 @@
 
 import sequelize from "../sequelize.js";
 import { DataTypes } from "sequelize";
-import { emailRegex } from "../../constants/authConstants.js";
+import { emailRegex, subscriptionList } from "../../constants/authConstants.js";
 
 
 const User = sequelize.define("user", {
-    username: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
     email: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -23,11 +19,19 @@ const User = sequelize.define("user", {
     password: {
         type: DataTypes.STRING,
         allowNull: false,
-    }
-    // TODO add subscription and token fields
+    },
+    subscription: {
+        type: DataTypes.ENUM,
+        values: subscriptionList,
+        defaultValue: "starter"
+    },
+        token: {
+        type: DataTypes.STRING,
+        defaultValue: null,
+    },
 });
 
 
-await User.sync({ alter: true});
+// await User.sync({ alter: true});
 
 export default User;

@@ -10,15 +10,15 @@ export const authRegisterController = async (req, res) => {
 
 export const authLoginController = async (req, res) => {
     const { email, password } = req.body;
-    const result = await authServices.loginUser({email, password});
+    const result = await authServices.loginUser({ email, password });
     res.status(200).json(result);
 };
 
 
-export const authUpdateSubscriptionController = async(req, res) => {
+export const authUpdateSubscriptionController = async (req, res) => {
     const { id } = req.params;
     const { subscription } = req.body;
-    const user = await authServices.updateUserSubscription({id, subscription});
+    const user = await authServices.updateUserSubscription({ id, subscription });
     res.status(200).json({
         email: user.email,
         subscription: user.subscription,

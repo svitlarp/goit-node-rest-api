@@ -1,11 +1,8 @@
 import User from "../db/models/User.js";
 import bcrypt from "bcrypt";
 import HttpError from "../helpers/HttpError.js";
-import jwt from "jsonwebtoken";
-import "dotenv/config";
+import { createToken } from "../helpers/jwtToken.js";
 
-
-const {JWT_SECRET} = process.env;
 
 export const registerUser = async data => {
     const passwordHash = await bcrypt.hash(data.password, 10);
@@ -15,7 +12,7 @@ export const registerUser = async data => {
     });
 };
 
-export const loginUser = async ({email, password}) => {
+export const loginUser = async ({ email, password }) => {
     const user = await User.findOne({
         where: {
             email,
@@ -30,19 +27,20 @@ export const loginUser = async ({email, password}) => {
     const payload = {
         id: user.id,
     }
-    const token = jwt.sign(payload, JWT_SECRET, {expiresIn: "24h"});
+    const token = createToken(payload);
     return {
-        token: token, 
+        token: token,
         user: {
             email: user.email,
             subscription: user.subscription
-        }};
+        }
+    };
 };
 
-export const updateUserSubscription = async ({id, subscription}) => {
+export const updateUserSubscription = async ({ id, subscription }) => {
     const user = await User.findByPk(id);
     if (!user) throw HttpError(404, `User not found with id: ${id}`);
 
-    await user.update({subscription});
+    await user.update({ subscription });
     return user;
 };

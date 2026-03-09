@@ -17,13 +17,17 @@ export const getContactByIdController = async (req, res) => {
 };
 
 export const addContactController = async (req, res) => {
-    const {name, email, phone} = req.body;
+    console.log("ContactsController Create Contact Method");
+    console.log("req,user: ", req.user);
+    const { name, email, phone, favorite } = req.body;
     if (!name || !phone) {
         throw HttpError(400, "Missing required name field");
     }
-    const newContact = await contactsService.addContact({name, email, phone});
+    const owner = req.user.id;
+    const newContact = await contactsService.addContact({ name, email, phone, favorite, owner });
     res.status(201).json(newContact);
 };
+
 
 export const updateContactController = async (req, res) => {
     const { id } = req.params;

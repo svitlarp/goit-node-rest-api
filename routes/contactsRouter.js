@@ -1,7 +1,7 @@
 import express from "express";
 import {
   getContactsController,
-  getContactByIdController,
+  getContactController,
   addContactController,
   updateContactController,
   deleteContactController,
@@ -9,13 +9,16 @@ import {
 } from "../controllers/contactsControllers.js";
 import validateBody from "../helpers/validateBody.js";
 import { createContactSchema, updateContactSchema } from "../schemas/contactsSchemas.js";
+import authenticate from "../middlewares/authenticate.js";
 
 
 const contactsRouter = express.Router();
 
+contactsRouter.use(authenticate);
+
 contactsRouter.get("/", getContactsController);
 
-contactsRouter.get("/:id", getContactByIdController);
+contactsRouter.get("/:id", getContactController);
 
 contactsRouter.post("/", validateBody(createContactSchema), addContactController);
 

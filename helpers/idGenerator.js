@@ -6,5 +6,5 @@ export default function idGenerator(length) {
         .randomBytes(length)
         .toString('base64')
         .replace(/[^A-Za-z0-9]/gi, '')
-        .slice(0, length+1);
+        .slice(0, length + 1);
 }

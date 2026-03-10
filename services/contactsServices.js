@@ -1,31 +1,57 @@
 import Contact from "../db/models/Contact.js";
+import User from "../db/models/User.js";
 
-export const listContacts = async() =>{
-    const data = await Contact.findAll();
-    console.log('data: ', data);
+
+export const listContacts = async (ownerId, isFavorite) => {
+    const data = await Contact.findAll({
+        where: {
+            owner: ownerId
+        },
+        include: {
+            model: User,
+            attributes: ["id", "name", "email"],
+        },
+        limit: 20,
+    });
     return data;
 };
 
-export const getContactById = async(contactId) => {
-    const contact = await Contact.findOne({where: {id: contactId}}); 
+export const getContact = async (contactId, ownerId) => {
+    const contact = await Contact.findOne({
+        where: {
+            id: contactId,
+            owner: ownerId,
+        }
+    });
     return contact || null;
 };
 
-export const addContact = async(data) => {
+export const addContact = async (data) => {
     return await Contact.create(data);
 };
 
-export const updateContact = async(contactId, data) => {
-    const contact = await Contact.findByPk(contactId);
+
+export const updateContact = async (contactId, data, ownerId) => {
+    const contact = await Contact.findOne({
+        where: {
+            id: contactId,
+            owner: ownerId,
+        }
+    });
 
     if (!contact) return null;
-    
+
     await contact.update(data);
     return contact;
 };
 
-export const removeContact = async(contactId) => {
-    const contact = await Contact.findByPk(contactId);
+export const removeContact = async (contactId, ownerId) => {
+    const contact = await Contact.findOne({
+        where: {
+            id: contactId,
+            owner: ownerId,
+        }
+    });
 
     if (!contact) return null;
 
@@ -33,11 +59,16 @@ export const removeContact = async(contactId) => {
     return contact;
 };
 
-export const updateStatusContact = async(contactId, body) => {
-    const contact = await Contact.findByPk(contactId);
+export const updateStatusContact = async (contactId, body, ownerId) => {
+    const contact = await Contact.findOne({
+        where: {
+            id: contactId,
+            owner: ownerId,
+        }
+    });
 
     if (!contact) return null;
 
-    await contact.update({favorite: body});
+    await contact.update({ favorite: body });
     return contact;
 }

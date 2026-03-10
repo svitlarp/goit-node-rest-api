@@ -1,7 +1,7 @@
 import express from "express";
 import {
   getContactsController,
-  getContactByIdController,
+  getContactController,
   addContactController,
   updateContactController,
   deleteContactController,
@@ -18,7 +18,7 @@ contactsRouter.use(authenticate);
 
 contactsRouter.get("/", getContactsController);
 
-contactsRouter.get("/:id", getContactByIdController);
+contactsRouter.get("/:id", getContactController);
 
 contactsRouter.post("/", validateBody(createContactSchema), addContactController);
 

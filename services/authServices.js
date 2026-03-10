@@ -5,6 +5,9 @@ import { createToken } from "../helpers/jwtToken.js";
 
 
 export const registerUser = async data => {
+    const existingUser = await User.findOne({ where: { email: data.email } });
+    if (existingUser) throw HttpError(409, "Email in use"); 
+
     const passwordHash = await bcrypt.hash(data.password, 10);
     return User.create({
         ...data,

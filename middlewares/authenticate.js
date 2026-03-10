@@ -23,7 +23,7 @@ const authenticate = async (req, res, next) => {
         }
     });
     if (!user || !user.token) throw HttpError(401, 'User not found');
-    req.user = user; //all info about user will be in req.user
+    req.user = user; 
     next();
 }
 

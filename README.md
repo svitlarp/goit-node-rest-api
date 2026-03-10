@@ -17,10 +17,18 @@ A simple RESTful API built with Express.js for managing contacts.
 | HTTP Method | Description | Success Response | Error Response |
 | --- | --- | --- | --- |
 | **GET /api/contacts** |Returns a list of all contacts. | 200 OK |404 Not Found  |
-| **GET /api/contacts/:id** |Returns a contact by ID.| 200 /ok | 404 Not Found | 
+| **GET /api/contacts/:id** |Returns a contact by ID.| 200 OK | 404 Not Found | 
 | **DELETE /api/contacts/:id** |Deletes a contact by ID. | 200 OK | 404 Not Found
 | **POST /api/contacts** |Creates a new contact.| 201 Created | 400 Bad request (Missing required field) 
 | **PUT /api/contacts/:id** |Updates an existing contact. | 200 OK | 404 Not Found
+| **PUT /api/contacts/:id/favorite** |Updates favorite status | 200 OK | 404 Not Found
+| **POST /api/auth/register** |Creates a new User.| 201 Created | 400 Bad request / 409 Conflict
+| **POST /api/auth/login** |Log in.| 200 OK | 400 Bad Request / 401 Unauthorized   
+| **GET /api/auth/logout** |Log out| 204 No Content | 400 Bad request 
+| **POST /api/auth/current** | Returns the currently authenticated user's data.| 200 OK  | 401 Unauthorized
+| **PATCH /api/auth/subscription/:id** |Updates subscription. | 200 OK | 401 Unauthorized
+
+
 
 
 ### Technologies
@@ -30,9 +38,11 @@ A simple RESTful API built with Express.js for managing contacts.
 + Sequelize 
 
 ### Additional libraries  
-- Joi Validation Schema[--->](https://www.npmjs.com/package/joi) Schema description language and data validator for JavaScript  
+ - Joi Validation Schema[--->](https://www.npmjs.com/package/joi) Schema description language and data validator for JavaScript  
  - Cors [--->](https://www.npmjs.com/package/cors) Node.js middleware for Express that enables Cross-Origin Resource Sharing (CORS).  
  - Morgan [--->](https://www.npmjs.com/package/morgan) HTTP request logger middleware for Node.js
+ - jsonwebtoken [--->](https://www.npmjs.com/package/jsonwebtoken) A popular library for working with JWTs in Node.js to create, sign, and verify JWTs.
+ - bcrypt [--->](https://www.npmjs.com/package/bcrypt) A library to hash passwords
 
 ### Installation
 

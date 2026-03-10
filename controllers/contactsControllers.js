@@ -4,7 +4,8 @@ import * as contactsService from "../services/contactsServices.js";
 
 export const getContactsController = async (req, res) => {
     const ownerId = req.user.id;
-    const contacts = await contactsService.listContacts(ownerId);
+    const { isFavorite } = req.query;
+    const contacts = await contactsService.listContacts(ownerId, isFavorite);
     res.status(200).json(contacts);
 };
 

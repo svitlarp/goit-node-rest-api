@@ -14,6 +14,19 @@ export const authLoginController = async (req, res) => {
     res.status(200).json(result);
 };
 
+export const authCurrentController = async (req, res) => {
+    const {username, subscription} = req.user; 
+    console.log(req.user);
+    res.status(200).json({
+        username,
+        subscription,
+    });
+}
+
+export const authLogoutController = async (req, res) => {
+    await authServices.logoutUser(req.user);
+    res.status(204).send();
+}
 
 export const authUpdateSubscriptionController = async (req, res) => {
     const { id } = req.params;
@@ -24,3 +37,4 @@ export const authUpdateSubscriptionController = async (req, res) => {
         subscription: user.subscription,
     });
 };
+

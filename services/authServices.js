@@ -28,6 +28,7 @@ export const loginUser = async ({ email, password }) => {
         id: user.id,
     }
     const token = createToken(payload);
+    await user.update({token});
     return {
         token: token,
         user: {
@@ -36,6 +37,10 @@ export const loginUser = async ({ email, password }) => {
         }
     };
 };
+
+export const logoutUser = async (user) => {
+    return user.update({token: null});
+}
 
 export const updateUserSubscription = async ({ id, subscription }) => {
     const user = await User.findByPk(id);

@@ -1,19 +1,35 @@
+import * as fs from "fs/promises"; 
+import path from "path";
 import User from "../db/models/User.js";
 import bcrypt from "bcrypt";
 import HttpError from "../helpers/HttpError.js";
 import { createToken } from "../helpers/jwtToken.js";
+import gravatar from "gravatar";
 
 
 export const registerUser = async data => {
     const existingUser = await User.findOne({ where: { email: data.email } });
-    if (existingUser) throw HttpError(409, "Email in use"); 
+    if (existingUser) throw HttpError(409, "Email in use");
 
     const passwordHash = await bcrypt.hash(data.password, 10);
+    const avatarURL = gravatar.url(data.email, { s: "200", r: "g", d: "monsterid" }, true);
     return User.create({
         ...data,
-        password: passwordHash
+        password: passwordHash,
+        avatarURL,
     });
 };
+
+export const updateUserAvatar = async (user, file) => {
+    let newAvatar = null;
+    if (file) {
+        const newPath = path.resolve("public", "avatars", file.filename);
+        await fs.rename(file.path, newPath);
+        newAvatar = `/avatars/${file.filename}`;
+    }
+    user.update({avatarURL: newAvatar});
+    return user.avatarURL;
+}
 
 export const loginUser = async ({ email, password }) => {
     const user = await User.findOne({

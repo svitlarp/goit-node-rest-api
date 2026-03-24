@@ -29,7 +29,7 @@ const Contact = sequelize.define("contact", {
     },
 });
 
-// await Contact.sync({ alter: true });
+// await Contact.sync({ force: true });
 // await Contact.sync();
 // await Contact.truncate();
 

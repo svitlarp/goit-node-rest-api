@@ -27,6 +27,7 @@ A simple RESTful API built with Express.js for managing contacts.
 | **GET /api/auth/logout** |Log out| 204 No Content | 400 Bad request 
 | **POST /api/auth/current** | Returns the currently authenticated user's data.| 200 OK  | 401 Unauthorized
 | **PATCH /api/auth/subscription/:id** |Updates subscription. | 200 OK | 401 Unauthorized
+| **PATCH /api/auth/avatars** |Updates user avatar. | 200 OK | 401 Unauthorized
 
 
 
@@ -43,6 +44,8 @@ A simple RESTful API built with Express.js for managing contacts.
  - Morgan [--->](https://www.npmjs.com/package/morgan) HTTP request logger middleware for Node.js
  - jsonwebtoken [--->](https://www.npmjs.com/package/jsonwebtoken) A popular library for working with JWTs in Node.js to create, sign, and verify JWTs.
  - bcrypt [--->](https://www.npmjs.com/package/bcrypt) A library to hash passwords
+ - gravatar [--->](https://www.npmjs.com/package/gravatar?activeTab=readme) A library to generate Gravatar URLs.
+ - multer [--->](https://www.npmjs.com/package/multer) A node.js middleware for handling multipart/form-data, which is primarily used for uploading files.
 
 ### Installation
 

@@ -8,8 +8,7 @@ import connectDatanbase from "./db/connectDatabase.js";
 import authRouter from './routes/authRouter.js';
 import notFoundHandler from './middlewares/notFoundHandler.js';
 import errorHandler from './middlewares/error.handler.js';
-import sequelize from './db/sequelize.js';
-// import User from './db/models/User.js';
+// import sequelize from './db/sequelize.js';
 
 
 const app = express();
@@ -17,7 +16,7 @@ const app = express();
 app.use(morgan("dev"));
 app.use(cors());
 app.use(express.json());
-app.use(express.static('public'));
+app.use(express.static("public"));
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
@@ -31,7 +30,6 @@ app.use(errorHandler);
 
 await connectDatanbase();
 // await sequelize.sync({ alter: true});
-// await User.sync();
 
 const port = process.env.PORT || 3000;
 

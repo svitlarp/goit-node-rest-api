@@ -1,3 +1,5 @@
+import * as fs from "fs/promises"; 
+import path from "path";
 import User from "../db/models/User.js";
 import bcrypt from "bcrypt";
 import HttpError from "../helpers/HttpError.js";
@@ -18,14 +20,16 @@ export const registerUser = async data => {
     });
 };
 
-export const updateUserAvatar = async data => {
-    const existingUser = await User.findOne({
-        where:
-        {
-            email,
-        }
-    });
-
+export const updateUserAvatar = async (user, file) => {
+    let newAvatar = null;
+    if (file) {
+        const newPath = path.resolve("public", "avatars", file.filename);
+        await fs.rename(file.path, newPath);
+        newAvatar = `/avatars/${file.filename}`;
+    }
+    fs.copyFile(file.destination, "./avatars");
+    user.update({avatarURL: newAvatar});
+    return user.avatarURL;
 }
 
 export const loginUser = async ({ email, password }) => {

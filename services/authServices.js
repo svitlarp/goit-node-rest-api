@@ -2,18 +2,31 @@ import User from "../db/models/User.js";
 import bcrypt from "bcrypt";
 import HttpError from "../helpers/HttpError.js";
 import { createToken } from "../helpers/jwtToken.js";
+import gravatar from "gravatar";
 
 
 export const registerUser = async data => {
     const existingUser = await User.findOne({ where: { email: data.email } });
-    if (existingUser) throw HttpError(409, "Email in use"); 
+    if (existingUser) throw HttpError(409, "Email in use");
 
     const passwordHash = await bcrypt.hash(data.password, 10);
+    const avatarURL = gravatar.url(data.email, { s: "200", r: "g", d: "monsterid" }, true);
     return User.create({
         ...data,
-        password: passwordHash
+        password: passwordHash,
+        avatarURL,
     });
 };
+
+export const updateUserAvatar = async data => {
+    const existingUser = await User.findOne({
+        where:
+        {
+            email,
+        }
+    });
+
+}
 
 export const loginUser = async ({ email, password }) => {
     const user = await User.findOne({

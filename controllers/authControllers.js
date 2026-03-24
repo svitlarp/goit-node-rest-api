@@ -8,6 +8,16 @@ export const authRegisterController = async (req, res) => {
     });
 };
 
+export const authUpdateAvatarController = async (req, res) => {
+    console.log({ body: req.body});
+    console.log({ file: req.file});
+    // const { id } = req.params;
+    // const avatarURLUpdated = await authServices.updateUserAvatar({id});
+    // res.status(200).json({
+    //     avatarURL: avatarURLUpdated,
+    // });
+}
+
 export const authLoginController = async (req, res) => {
     const { email, password } = req.body;
     const result = await authServices.loginUser({ email, password });

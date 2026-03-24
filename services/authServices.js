@@ -27,7 +27,6 @@ export const updateUserAvatar = async (user, file) => {
         await fs.rename(file.path, newPath);
         newAvatar = `/avatars/${file.filename}`;
     }
-    fs.copyFile(file.destination, "./avatars");
     user.update({avatarURL: newAvatar});
     return user.avatarURL;
 }

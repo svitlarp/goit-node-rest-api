@@ -1,15 +1,10 @@
 import Contact from "../db/models/Contact.js";
-import User from "../db/models/User.js";
 
 
 export const listContacts = async (ownerId, isFavorite) => {
     const data = await Contact.findAll({
         where: {
             owner: ownerId
-        },
-        include: {
-            model: User,
-            attributes: ["id", "name", "email"],
         },
         limit: 20,
     });

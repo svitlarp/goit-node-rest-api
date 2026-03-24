@@ -20,6 +20,9 @@ const User = sequelize.define("user", {
         type: DataTypes.STRING,
         allowNull: false,
     },
+    avatarURL: {
+        type: DataTypes.STRING,
+    },
     subscription: {
         type: DataTypes.ENUM,
         values: subscriptionList,
@@ -33,5 +36,6 @@ const User = sequelize.define("user", {
 
 
 // await User.sync({ force: true});
+// await User.sync({ alter: true});
 
 export default User;

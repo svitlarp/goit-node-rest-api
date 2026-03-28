@@ -1,15 +1,12 @@
-import 'dotenv/config'
+import "dotenv/config";
 import express from "express";
 import morgan from "morgan";
 import cors from "cors";
 import contactsRouter from "./routes/contactsRouter.js";
-import "dotenv/config";
 import connectDatanbase from "./db/connectDatabase.js";
 import authRouter from './routes/authRouter.js';
 import notFoundHandler from './middlewares/notFoundHandler.js';
 import errorHandler from './middlewares/error.handler.js';
-// import sequelize from './db/sequelize.js';
-
 
 const app = express();
 
@@ -29,7 +26,6 @@ app.use(notFoundHandler);
 app.use(errorHandler);
 
 await connectDatanbase();
-// await sequelize.sync({ alter: true});
 
 const port = process.env.PORT || 3000;
 

@@ -5,6 +5,12 @@ import { emailRegex, subscriptionList } from "../../constants/authConstants.js";
 
 
 const User = sequelize.define("user", {
+    id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+        allowNull: false,
+    },
     email: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -28,7 +34,7 @@ const User = sequelize.define("user", {
         values: subscriptionList,
         defaultValue: "starter"
     },
-        token: {
+    token: {
         type: DataTypes.STRING,
         defaultValue: null,
     },

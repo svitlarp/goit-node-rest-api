@@ -3,6 +3,12 @@ import { DataTypes } from "sequelize";
 
 
 const Contact = sequelize.define("contact", {
+    id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+        allowNull: false,
+    },
     name: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -20,12 +26,12 @@ const Contact = sequelize.define("contact", {
         defaultValue: false,
     },
     owner: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: "users",
-        key: "id",
-      },
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: "users",
+            key: "id",
+        },
     },
 });
 

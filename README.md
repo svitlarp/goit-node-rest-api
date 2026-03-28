@@ -69,7 +69,12 @@ cp .env.example .env
 Update the variables in .env according to your local configuration.   
    
    
-4) Start the server
+4) Start the database
+```
+docker compose -f path-to-file/compose.yaml up -d postgres
+```
+
+Start the server
 ```
 npm run dev
 ```

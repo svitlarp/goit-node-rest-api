@@ -1,0 +1,18 @@
+[
+    {
+        "email": "jhon@gmail.com",
+        "subscription": "starter"
+    },
+    {
+        "email": "alice@gmail.com",
+        "subscription": "business"
+    },
+    {
+        "email": "bob@gmail.com",
+        "subscription": "starter"
+    },
+    {
+        "email": "tom@gmail.com",
+        "subscription": "pro"
+    }
+]

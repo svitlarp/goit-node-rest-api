@@ -28,6 +28,7 @@ A simple RESTful API built with Express.js for managing contacts.
 | **POST /api/auth/current** | Returns the currently authenticated user's data.| 200 OK  | 401 Unauthorized
 | **PATCH /api/auth/subscription/:id** |Updates subscription. | 200 OK | 401 Unauthorized
 | **PATCH /api/auth/avatars** |Updates user avatar. | 200 OK | 401 Unauthorized
+| **GET /api/auth//verify/:verificationToken** |Verify| 200 Ok | 404 Not Found 
 
 
 
@@ -46,6 +47,7 @@ A simple RESTful API built with Express.js for managing contacts.
  - bcrypt [--->](https://www.npmjs.com/package/bcrypt) A library to hash passwords
  - gravatar [--->](https://www.npmjs.com/package/gravatar?activeTab=readme) A library to generate Gravatar URLs.
  - multer [--->](https://www.npmjs.com/package/multer) A node.js middleware for handling multipart/form-data, which is primarily used for uploading files.
+ - nodemailer [-->](https://www.npmjs.com/package/nodemailer) Nodemailer is the most popular email sending library for Node.js.
 
 ### Installation
 

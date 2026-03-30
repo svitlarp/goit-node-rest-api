@@ -1,10 +1,12 @@
 import * as fs from "fs/promises"; 
 import path from "path";
+import { v4 as uuidv4 } from "uuid";
 import User from "../db/models/User.js";
 import bcrypt from "bcrypt";
 import HttpError from "../helpers/HttpError.js";
 import { createToken } from "../helpers/jwtToken.js";
 import gravatar from "gravatar";
+import sendEmail from "../helpers/sendEmail.js";
 
 
 export const registerUser = async data => {
@@ -13,11 +15,23 @@ export const registerUser = async data => {
 
     const passwordHash = await bcrypt.hash(data.password, 10);
     const avatarURL = gravatar.url(data.email, { s: "200", r: "g", d: "monsterid" }, true);
-    return User.create({
+    const verificationToken = uuidv4();
+
+    const newUser = await User.create({
         ...data,
         password: passwordHash,
         avatarURL,
+        verificationToken,
     });
+
+    const BASE_URL = process.env.BASE_URL || "http://localhost:3000";
+    await sendEmail({
+        to: data.email,
+        subject: "Verify your email",
+        html: `<p>Click <a href="${BASE_URL}/api/auth/verify/${verificationToken}">here</a> to verify your email.</p>`,
+    });
+
+    return newUser;
 };
 
 export const updateUserAvatar = async (user, file) => {
@@ -39,6 +53,7 @@ export const loginUser = async ({ email, password }) => {
     });
 
     if (!user) throw HttpError(401, "Email is wrong");
+    if (!user.verify) throw HttpError(401, "Email not verified");
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) throw HttpError(401, "Password is wrong");
@@ -55,6 +70,25 @@ export const loginUser = async ({ email, password }) => {
             subscription: user.subscription
         }
     };
+};
+
+export const verifyUserEmail = async (verificationToken) => {
+    const user = await User.findOne({ where: { verificationToken } });
+    if (!user) throw HttpError(404, "User not found");
+    await user.update({ verify: true, verificationToken: null });
+};
+
+export const resendVerifyEmail = async (email) => {
+    const user = await User.findOne({ where: { email } });
+    if (!user) throw HttpError(404, "User not found");
+    if (user.verify) throw HttpError(400, "Verification has already been passed");
+
+    const BASE_URL = process.env.BASE_URL || "http://localhost:3000";
+    await sendEmail({
+        to: email,
+        subject: "Verify your email",
+        html: `<p>Click <a href="${BASE_URL}/api/auth/verify/${user.verificationToken}">here</a> to verify your email.</p>`,
+    });
 };
 
 export const logoutUser = async (user) => {

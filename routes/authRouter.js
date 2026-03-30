@@ -8,6 +8,8 @@ import {
     authCurrentController,
     authLogoutController,
     authUpdateAvatarController,
+    authVerifyController,
+    authResendVerifyController,
 } from "../controllers/authControllers.js";
 import authenticate from "../middlewares/authenticate.js";
 import upload from "../middlewares/upload.js";
@@ -19,6 +21,8 @@ authRouter.post("/register", upload.single("avatarURL"), validateBody(authRegist
 authRouter.patch("/avatars", authenticate, upload.single("avatarURL"), authUpdateAvatarController);
 authRouter.post("/login", validateBody(authLoginSchema), authLoginController);
 authRouter.get("/current", authenticate, authCurrentController);
+authRouter.get("/verify/:verificationToken", authVerifyController);
+authRouter.post("/verify", authResendVerifyController);
 authRouter.post("/logout", authenticate, authLogoutController);
 authRouter.patch("/subscription/:id", validateBody(authUpdateSubscriptionSchema), authUpdateSubscriptionController);
 
